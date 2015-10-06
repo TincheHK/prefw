@@ -37,8 +37,8 @@
                   {{states.currentItem.name || 'New Workflow'}}
                 </h5>
 
-                <ol class="text-muted" style="font-style: italic; font-size: .8em;">
-                  <li ng-repeat="$task in states.currentItem.tasks">
+                <ol class="task-list">
+                  <li class="inactive" ng-repeat="$task in states.currentItem.tasks">
                     {{$task.extra.name || $task.name}}
                   </li>
                 </ol>
