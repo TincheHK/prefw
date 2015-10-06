@@ -7,9 +7,7 @@ use core\Database;
 use core\Deferred;
 use core\Utility as util;
 
-use framework\Configuration as conf;
-use framework\Request;
-use framework\Response;
+use framework\System;
 
 use framework\exceptions\FrameworkException;
 
@@ -317,6 +315,8 @@ class TaskInstance extends abstraction\JsonSchemaModel {
       $controller = $this->extra['endpoint']['controller'];
       $basePath = ".private/modules/$this->name";
       require_once("$basePath/controllers/$controller.php");
+
+      // note; change working directory to task based
       chdir($basePath);
       unset($basePath);
 
@@ -333,18 +333,17 @@ class TaskInstance extends abstraction\JsonSchemaModel {
          *    2. Exceptions rejects immediately
          *    3. Promise objects pipes results
          */
-        if ( $ret === null ) {
+        if ( @$ret === null ) {
           $this->resolve();
         }
         else if ( $ret instanceof \core\Promise ) {
           $ret->then(array($this, 'resolve'), array($this, 'reject'));
         }
       }
-    }
 
-    \core\Log::info('TaskInstance:afterProcess', array(
-        'dataStore' => $this->workInstance()->dataStore
-      ));
+      // note; revert back to project working directory
+      chdir(System::getPathname());
+    }
 
     return $this->__deferred->promise();
   }
