@@ -4,3 +4,6 @@
 [submodule ".private/modules/prefw/example-form-task"]
 	path = .private/modules/prefw/example-form-task
 	url = https://github.com/TincheHK/prefw-example-form-task.git
+[submodule ".private/modules/prefw/example-headless-task"]
+	path = .private/modules/prefw/example-headless-task
+	url = https://github.com/TincheHK/prefw-example-headless-task.git
