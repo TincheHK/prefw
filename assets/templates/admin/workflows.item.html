@@ -1,0 +1,171 @@
+<ol class="breadcrumb">
+  <li>Control Panel</li>
+  <li>Workflows</li>
+</ol>
+
+<div class="row">
+  <!-- hidable menu on xs -->
+  <div class="col-sm-3 col-md-2">
+    <ul class="nav nav-pills nav-stacked">
+      <li role="presentation" class="active">
+        <a href="/admin/workflows">Workflows</a>
+      </li>
+      <li role="presentation">
+        <a href="/admin/tasks">Tasks</a>
+      </li>
+      <li role="presentation">
+        <a href="/admin/users">Users</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="col-sm-9 col-md-10">
+    <form name="dataForm" action="/admin/workflows" ng-submit="doSubmit($event, dataForm)">
+      <div class="row">
+        <div class="col-md-8 col-lg-9">
+          <div sf-schema="states.schema" sf-form="states.form" sf-model="states.currentItem"></div>
+        </div>
+
+        <div class="work col-md-4 col-lg-3 hidden-sm hidden-xs">
+          <div class="form-group instance">
+            <label class="control-label">Preview</label>
+
+            <div class="thumbnail" ng-style="{ 'background-image': 'url(' + ($item.background_image || '/assets/images/work-blank.jpg' ) + ')' }">
+              <div class="caption">
+                <h5>
+                  <span ng-if="states.currentItem.icon" class="{{states.currentItem.icon}}"></span>
+                  {{states.currentItem.name || 'New Workflow'}}
+                </h5>
+
+                <ol class="text-muted" style="font-style: italic; font-size: .8em;">
+                  <li ng-repeat="$task in states.currentItem.tasks">
+                    {{$task.extra.name || $task.name}}
+                  </li>
+                </ol>
+
+                <div class="text-right text-muted">
+                  <small><em>- just now</em></small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tasks array -->
+      <div class="form-group workflow">
+        <label class="control-label">
+          Tasks <small class="text-muted">(Drag to reorder)</small>
+        </label>
+
+        <ul id="listTasks" class="list-group clearfix" ui-sortable="{ items: 'li:not(.add)' }" ng-model="states.currentItem.tasks">
+          <li class="list-group-item" ng-repeat="($index, $item) in states.currentItem.tasks track by $index">
+            <div class="pull-right">
+              <a href="javascript:" class="text-danger" ng-click="removeTask($item)">
+                <span class="glyphicon glyphicon-trash"></span>
+              </a>
+
+              <a href="#" data-toggle="modal" data-target="#paneSettings-task{{$index}}">
+                <span class="glyphicon glyphicon-cog"></span>
+              </a>
+            </div>
+
+            <label class="title">{{$item.extra.name || $item.name}}</label>
+
+            <div class="description text-muted" ng-if="$item.description">{{$item.description}}</div>
+
+            <div class="modal fade" id="paneSettings-task{{$index}}" role="dialog">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4>Task Settings <small>{{$item.extra.name || $item.name}}</small></h4>
+                  </div>
+
+                  <div class="modal-body">
+                    <div sf-schema="$item.extra.options.schema" sf-form="$item.extra.options.form || ['*']" sf-model="$item.settings"
+                         ng-if="$item.extra.options"></div>
+
+                    <p ng-if="!$item.extra.options">This form has no options.</p>
+
+                    <div class="form-group text-right">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+
+          <li class="list-group-item add">
+            <a href="javascript:" ng-click="states.addTask = true" ng-if="!states.addTask">
+              <span class="glyphicon glyphicon-plus"></span> Add
+            </a>
+
+            <a ng-if="states.addTask" style="color: black;">
+              <span class="glyphicon glyphicon-option-horizontal"></span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="panel panel-default" ng-if="states.addTask">
+        <div class="panel-heading">
+          <button type="button" href="javascript:" class="close" ng-click="states.addTask = false">&times;</button>
+
+          Add Task
+        </div>
+
+        <div class="panel-body">
+          <div class="form-group">
+            <input type="text" class="form-control" ng-model="states.txtSearchTask" placeholder="Type to search"/>
+          </div>
+
+          <div class="list-group">
+            <a href="javascript:" class="list-group-item"
+              ng-repeat="$item in tasks | filter:states.txtSearchTask"
+              ng-click="addTask($item)">
+              <label class="list-group-item-heading">{{$item.extra.name || $item.name}}</label>
+              <p class="list-group-item-text">{{$item.description}}</p>
+            </a>
+          </div>
+
+          <p class="lead text-muted text-center" ng-if="!(tasks | filter:states.txtSearchTask).length">
+            No task in view
+          </p>
+        </div>
+      </div>
+
+      <div class="form-group text-right" ng-if="states.formLock">
+        <span class="glyphicon glyphicon-refresh"></span>
+      </div>
+
+      <div class="form-group" ng-if="!states.formLock">
+        <div class="row">
+          <div class="col-xs-6">
+            <div class="btn-group" ng-if="states.currentItem.id">
+              <button type="button" class="btn btn-danger"
+                ng-class="{ active: states.deleteLock }"
+                ng-disabled="states.addTask"
+                ng-click="states.deleteLock = !states.deleteLock">
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
+
+              <button type="submnit" class="btn btn-danger"
+                ng-if="states.deleteLock"
+                ng-disabled="states.addTask"
+                ng-click="doDelete($event)">Delete</button>
+            </div>
+          </div>
+
+          <div class="col-xs-6 text-right">
+            <a href="/admin/workflows" class="btn btn-default"
+              ng-disabled="states.addTask">Cancel</a>
+
+            <input type="submit" class="btn btn-primary" value="Save"
+              ng-disabled="states.addTask"/>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

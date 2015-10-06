@@ -1,0 +1,6 @@
+[submodule ".private/crons/prefw-faye"]
+	path = .private/crons/prefw-faye
+	url = https://github.com/TIncheHK/prefw-faye.git
+[submodule ".private/modules/prefw/example-form-task"]
+	path = .private/modules/prefw/example-form-task
+	url = https://github.com/TincheHK/prefw-example-form-task.git

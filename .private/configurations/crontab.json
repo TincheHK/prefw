@@ -1,0 +1,19 @@
+{
+  "schedules": [
+    {
+      "schedule": "* * * * *",
+      "command": "php .private/crons/HeadlessWorker.php",
+      "name": "headless_worker"
+    },
+    {
+      "schedule": "*/5 * * * *",
+      "command": "node .private/crons/prefw-faye/app.js --cron",
+      "name": "faye_bayeux_keepalive"
+    },
+    {
+      "schedule": "*/5 * * * *",
+      "command": "php .private/crons/SessionSweeper.php",
+      "name": "session_sweeper"
+    }
+  ]
+}

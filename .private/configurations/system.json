@@ -1,0 +1,76 @@
+{
+  "environment": "development",
+
+  "log": {
+    "level": "info"
+  },
+
+  "paths": {
+    "requires": [
+      ".private/scripts/vendor/autoload.php"
+    ],
+    "autoload": {
+      "modules": ".private/modules",
+      "services": ".private/services",
+      "*": ".private/scripts"
+    },
+    "external": {
+      "src": ".private/src/external"
+    },
+    "scss": {
+      "src": ".private/src/stylesheets",
+      "dst": "assets/css"
+    },
+    "less": {
+      "src": ".private/src/stylesheets",
+      "dst": "assets/css"
+    },
+    "jsmin": {
+      "src": [
+        ".private/src/javascripts",
+        "assets/js"
+      ],
+      "dst": "assets/js"
+    },
+    "cssmin": {
+      "src": "assets/css",
+      "dst": "assets/css"
+    },
+    "prefw": {
+      "tasks": {
+        "views": "assets/templates/tasks"
+      }
+    }
+  },
+
+  "domains": {
+    "default": "prefw.dev",
+    "service": "prefw.dev",
+    "faye": "http:\/\/prefw.dev:8080\/"
+  },
+
+  "database": {
+    "driver": "mysql",
+    "host": "192.168.99.100",
+    "schema": "prefw",
+    "user": "root",
+    "password": "Passw0rd!12340000"
+  },
+
+  // "database": {
+  //   "driver": "mysql",
+  //   "host": "127.0.0.1",
+  //   "user": "root",
+  //   "schema": "prefw"
+  // },
+
+  "i18n": {
+    "localeDefault": "en_US"
+  },
+
+  "maintenance": {
+    "enable": false,
+    "templatePath": "/assets/templates/maintenance.html",
+    "whitelist": []
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "data": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "/serivce/_/Users/schema",
+    "type": "object",
+    "title": "User",
+    "description": "Users for the prefw system.",
+    "properties": {
+      "id": {
+        "description": "User identity key",
+        "type": "integer"
+      },
+      "username": {
+        "description": "Unique identifier for the user acconut",
+        "type": "string",
+        "format": "email",
+        "pattern": "^\\S+@\\S+$",
+        "minLength": 4,
+        "maxLength": 254,
+        "uniqueItems": true
+      },
+      "password": {
+        "description": "Password is encrypted after save.",
+        "type": "string",
+        "minLength": 8,
+        "maxLength": 255
+      },
+      "first_name": {
+        "description": "First name of the user",
+        "type": "string"
+      },
+      "middle_names": {
+        "description": "Middle names of the user, multiple middle names supported",
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "string"
+        }
+      },
+      "last_name": {
+        "description": "Last name of the user",
+        "type": "string"
+      },
+      "birthday": {
+        "description": "Date, or possibly time, of the birth of the user.",
+        "type": "string",
+        "format": "date-time"
+      },
+      "groups": {
+        "type": "array",
+        "description": "Groups this user is assigned.",
+        "items": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 255
+        },
+        "uniqueItems": true
+      }
+    },
+    "oneOf": [
+      { "required": ["username", "password"] },
+      { "required": ["username", "password_hash"] }
+    ]
+  },
+  "form": [
+    {
+      "key": "username",
+      "description": "Email address to uniquely identifies the user."
+    },
+    "password",
+    "groups"
+  ]
+}

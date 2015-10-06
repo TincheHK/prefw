@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en_US" ng-app="prefwApp">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>System Prefw</title>
+
+  <base href="/" ng-href="{{states.baseUrl || '/'}}"/>
+
+  <!-- jQuery -->
+  <script src="/assets/js/jquery.min.js"></script>
+  <script src="/assets/js/jquery-ui.min.js"></script>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="/assets/css/bootstrap-theme.min.css"/>
+  <script src="/assets/js/bootstrap.min.js"></script>
+
+  <!-- AngularJs -->
+  <script src="/assets/js/angular.min.js"></script>
+    <!-- $route -->
+    <script src="/assets/js/angular-route.min.js"></script>
+    <!-- $resource -->
+    <script src="/assets/js/angular-resource.min.js"></script>
+    <!-- $cookies -->
+    <script src="/assets/js/angular-cookies.min.js"></script>
+    <!-- ng-include-template -->
+    <script src="/assets/js/angular-include-template.min.js"></script>
+    <!-- angular-timeago -->
+    <script src="/assets/js/angular-timeago.min.js"></script>
+    <!-- hotkeys -->
+    <script src="/assets/js/angular-hotkeys.min.js"></script>
+    <!-- cgNotify -->
+    <link rel="stylesheet" href="/assets/css/angular-notify.min.css"/>
+    <script src="/assets/js/angular-notify.min.js"></script>
+    <!-- schema-form -->
+      <!-- $santize -->
+      <script src="/assets/js/angular-sanitize.min.js"></script>
+      <!-- tv4 -->
+      <script src="/assets/js/tv4.min.js"></script>
+      <!-- ObjectPath -->
+      <script src="/assets/js/ObjectPath.min.js"></script>
+    <script src="/assets/js/schema-form.min.js"></script>
+    <script src="/assets/js/bootstrap-decorator.min.js"></script>
+    <!-- angular ui-sortable -->
+    <script src="/assets/js/angular.ui-sortable.js"></script>
+
+  <!-- faye.js -->
+  <script src="/faye/client.js"></script>
+  <script src="/assets/js/angular-faye.min.js"></script>
+
+  <!-- angular-ui-bootstrap -->
+  <!-- <script src="/assets/js/ui-bootstrap-tpls-0.13.3.min.js"></script> -->
+
+  <!-- this -->
+  <link rel="stylesheet" href="/assets/css/app.min.css"/>
+  <script src="/assets/js/app.min.js"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse navbar-static-top">
+  <div class="container">
+    <a href="/" class="navbar-brand">
+      prefw
+    </a>
+
+    <p class="navbar-text lead" ng-if="states.title">
+      &raquo; {{states.title}}
+    </p>
+
+    <ul class="nav navbar-nav navbar-right" ng-if="states.user">
+      <li>
+        <a href="javascript:" class="dropdown-toggle text-right" data-toggle="dropdown" role="button">
+          {{states.user.username}}
+          <img width="20" height="20" ng-if="states.user.thumbnail" ng-src="states.user.thumbnail"/>
+          <span class="caret" ng-if="!states.user.thumbnail"></span>
+        </a>
+
+        <ul class="dropdown-menu">
+          <li>
+            <a href="/account">Account</a>
+          </li>
+          <li ng-if="states.user.groups.indexOf('Administrators') > -1">
+            <a href="/admin">Control Panel</a>
+          </li>
+          <li role="separator" class="divider"></li>
+          <li>
+            <a href="/logout">Logout</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <div ng-view></div>
+</div>
+
+</body>
+</html>

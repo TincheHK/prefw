@@ -1,0 +1,88 @@
+<ol class="breadcrumb">
+  <li>Control Panel</li>
+  <li>Tasks</li>
+</ol>
+
+<div class="row">
+  <div class="col-sm-3 col-md-2">
+    <div class="form-group">
+      <ul class="nav nav-pills nav-stacked">
+        <li role="presentation">
+          <a href="/admin/workflows">Workflows</a>
+        </li>
+        <li role="presentation" class="active">
+          <a href="/admin/tasks">Tasks</a>
+        </li>
+        <li role="presentation">
+          <a href="/admin/users">Users</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-sm-9 col-md-10" ng-if="tasks.length">
+    <div class="form-group">
+      <form class="form-inline text-right">
+        <div class="form-group">
+          <div class="input-group">
+            <input id="txtSearch" type="text" class="form-control" ng-model="states.searchText" placeholder="⌘ + / to search"/>
+
+            <span class="input-group-addon">
+              <span class="glyphicon glyphicon-search"></span>
+            </span>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="media" ng-repeat="$item in tasks | filter:states.searchText">
+      <div class="media-left media-icon" ng-switch="$item.extra.type">
+        <span ng-switch-when="Headless" class="glyphicon glyphicon-cloud"></span>
+        <span ng-switch-when="SchemaForm" class="glyphicon glyphicon-th-list"></span>
+        <span ng-switch-default class="glyphicon glyphicon-user"></span>
+      </div>
+
+      <div class="media-body">
+        <h4 class="media-heading">
+          {{$item.extra.name || $item.name}}
+          <a class="btn btn-link btn-sm" href="/admin/tasks/{{$item.name}}">
+            <span class="glyphicon glyphicon-pencil"></span> Edit
+          </a>
+        </h4>
+
+        <p>{{$item.description}}</p>
+
+        <small class="text-muted" ng-if="$item.groups">
+          User groups: {{$item.groups.join(', ')}}
+        </small>
+      </div>
+    </div>
+
+    <div class="pull-right">
+      <h5>Legends</h5>
+
+      <ul class="list-unstyled">
+        <li>
+          <span class="glyphicon glyphicon-cloud"></span>
+          Headless tasks will execute on server automatically
+        </li>
+
+        <li>
+          <span class="glyphicon glyphicon-th-list"></span>
+          Form tasks is normal tasks build with form builder
+        </li>
+
+        <li>
+          <span class="glyphicon glyphicon-user"></span>
+          Normal tasks will require user input to proceed
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div ng-if="!tasks.length">
+    <p class="lead text-center text-muted" ng-if="!tasks.length">
+      No tasks installed.
+    </p>
+  </div>
+</div>

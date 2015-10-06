@@ -1,0 +1,40 @@
+<div class="task">
+  <div class="background">
+    <img ng-src="{{ states.currentItem.background_image || '/assets/images/work-blank.jpg' }}"/>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3 hidden-sm hidden-xs">
+      <small class="text-muted">
+        <i ng-if="states.currentItem.icon" class="{{states.currentItem.icon}}"></i>
+        {{states.currentItem.name}}
+      </small>
+
+      <h4>{{states.currentItem.description}}</h4>
+
+      <ol class="task-list">
+        <li ng-repeat="$task in states.currentItem.tasks" class="{{ $index == states.currentItem.__nextIndex ? '' : 'in' }}active">
+          {{ $task.extra.name || $task.name }}
+        </li>
+      </ol>
+    </div>
+
+    <div class="col-md-9">
+      <h1 class="header-block">{{$task.extra.name || $task.name}}</h1>
+
+      <form class="form-content"
+        ng-submit="doProcess()"
+        ng-if="$task">
+        <div ng-include="'/task/' + $task.uuid + '/'"></div>
+
+        <div class="form-group text-right">
+          <a href="/" class="btn btn-default">Cancel</a>
+
+          <input type="submit" class="btn btn-primary" value="Submit"/>
+        </div>
+
+        {{ $task }}
+      </form>
+    </div>
+  </div>
+</div>

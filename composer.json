@@ -1,0 +1,34 @@
+{
+  "name": "TincheHK/prefw",
+  "description": "Work-Flowed Enterprise Resource Planner",
+  "type": "project",
+  "require": {
+    "leafo/lessphp": "~0.5",
+    "mustache/mustache": "~2.8",
+    "mtdowling/cron-expression": "~1",
+    "erusev/parsedown": "~1.5",
+    "symfony/yaml": "~3.0",
+    "geraintluff/jsv4": "~1.0",
+    "psr/log": "^1.0@dev",
+    "monolog/monolog": "^1.15@dev",
+    "leafo/scssphp": "dev-master",
+    "linkorb/jsmin-php": "dev-master",
+    "natxet/cssmin": "^3.0@dev",
+    "nc/faye-client": "dev-master",
+    "vierbergenlars/php-semver": "dev-master"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.1@dev"
+  },
+  "license": "WTFPL",
+  "authors": [
+    {
+      "name": "Vicary Archangel",
+      "email": "vicary@yahoo.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "config": {
+    "vendor-dir": ".private/scripts/vendor/"
+  }
+}

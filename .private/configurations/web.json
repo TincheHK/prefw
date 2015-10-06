@@ -1,0 +1,41 @@
+{
+  "http": {
+    "output": {
+      "buffer": {
+        "enable": true,
+        "size": 1024
+      }
+    }
+  },
+
+  "auth": {
+    "paths": {
+      ".private": false,
+      "assets": {
+        "templates": {
+          "admin.html": ["IsAdministrator"]
+        }
+      },
+      "service": {
+        "_": {
+          "Task": ["IsSuperUser"],
+          "TaskInstance": ["IsSuperUser"]
+        }
+      },
+      "*": true
+    },
+    "statusCode": 401
+  },
+
+  "resolvers": {
+    "file": {
+      "indexes": "Home index"
+    },
+    "service": {
+      "prefix": "/service"
+    },
+    "errordocs": {
+      "directory": ".private/templates/errordocs"
+    }
+  }
+}

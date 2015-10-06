@@ -1,0 +1,66 @@
+{
+  "data": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "/serivce/_/Tasks/schema",
+    "type": "object",
+    "title": "Task",
+    "description": "Task definition for the prefw system.",
+    "properties": {
+      "groups": {
+        "type": "array",
+        "description": "User groups this task is visible to.",
+        "items": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 255
+        },
+        "uniqueItems": true
+      }
+    },
+    "required": ["groups"]
+  },
+  "form": [
+    {
+      "type": "fieldset",
+      "title": "Basic Information",
+      "items": [
+        {
+          "type": "section",
+          "htmlClass": "form-horizontal",
+          "items": [
+            {
+              "type": "section",
+              "htmlClass": "form-group",
+              "items": [
+                {
+                  "type": "template",
+                  "template": "<label class=\"col-sm-2 control-label\">Task Name</label><div class=\"col-sm-10\"><p class=\"form-control-static\">{{model.name}}</p></div>"
+                },
+                {
+                  "type": "template",
+                  "template": "<label class=\"col-sm-2 control-label\">Description</label><div class=\"col-sm-10\"><p class=\"form-control-static\">{{model.description}}</p></div>"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "fieldset",
+      "title": "Permission",
+      "items": [
+        {
+          "key": "groups",
+          "notitle": true,
+          "items": [
+            {
+              "key": "groups[]",
+              "title": "group"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

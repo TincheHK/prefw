@@ -1,0 +1,136 @@
+{
+  "data": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "/service/_/Works/schema",
+    "type": "object",
+    "title": "Works",
+    "description": "Workflow containers",
+    "properties": {
+      "id": {
+        "description": "Container identity",
+        "type": "integer"
+      },
+      "name": {
+        "description": "Name of the workflow",
+        "type": "string",
+        "minLength": 2,
+        "maxLength": 255
+      },
+      "icon": {
+        "description": "Icon class for display",
+        "type": "string"
+      },
+      "background_image": {
+        "description": "Background image URL",
+        "type": "string"
+      },
+      "steps": {
+        "description": "Step objects for this workflow.",
+        "type": "array",
+        "uniqueItems": true,
+        "minItems": 1,
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "description": "Task identity key",
+              "minimum": 0,
+              "exclusiveMinimum": true
+            },
+            "schema": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": true
+        },
+        "_items": {
+          "$ref": "/service/_/Task/schema"
+        }
+      }
+    },
+    "required": ["name"]
+  },
+  "form": [
+    {
+      "type": "section",
+      "htmlClass": "row",
+      "items": [
+        {
+          "type": "section",
+          "htmlClass": "col-md-6 col-lg-7",
+          "items": [
+            "name"
+          ]
+        },
+        {
+          "type": "section",
+          "htmlClass": "col-md-6 col-lg-5",
+          "items": [
+            {
+              "key": "icon",
+              "description": "See <a href=\"http://getbootstrap.com/components\" target=\"_blank\">bootstrap glyphicon <i class=\"glyphicon glyphicon-new-window\"></i></a> for reference."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "_form": [
+    {
+      "type": "section",
+      "htmlClass": "row",
+      "items": [
+        {
+          "type": "section",
+          "htmlClass": "col-xs-4",
+          "items": [
+            "name",
+            "icon",
+            "background_image"
+          ]
+        },
+        {
+          "type": "section",
+          "htmlClass": "col-xs-8",
+          "items": [
+            {
+              "key": "steps",
+              "add": "New",
+              "items": [
+                {
+                  "notitle": true,
+                  "description": "Pick a step",
+                  "type": "template",
+                  "template": "<div class=\"form-group {{form.htmlClass}} schema-form-select\" ng-class=\"{'has-error': form.disableErrorState !== true && hasError(), 'has-success': form.disableSuccessState !== true && hasSuccess(), 'has-feedback': form.feedback !== false}\"> <label class=\"control-label {{form.labelHtmlClass}}\" ng-show=\"showTitle()\"> {{form.title}} </label> <select ng-model=\"$$value$$\" ng-model-options=\"form.ngModelOptions\" ng-disabled=\"form.readonly\" sf-changed=\"form\" class=\"form-control {{form.fieldHtmlClass}}\" schema-validate=\"form\" ng-options=\"item[form.nameField || 'name'] group by item.group for item in form.titleMap track by item.id\" name=\"{{form.key.slice(-1)[0]}}\"></select><div class=\"help-block\" sf-message=\"form.description\"></div></div>",
+                  "nameField": "name",
+                  "titleMap": [
+                    { "name": "Step1", "id": 1, "schema": { "$schema": "http://json-schema.org/draft-04/schema#", "type": "string" }, "data": {} }
+                  ],
+                  "onChange": "console.log(modelValue)"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "template",
+      "template": "<div class=\"form-group text-right {{form.htmlClass}}\">\n<input ng-repeat-start=\"item in form.items\" type=\"submit\" class=\"btn {{ item.style || 'btn-default' }} {{form.fieldHtmlClass}}\" value=\"{{item.title}}\" ng-if=\"item.type === 'submit'\"/>\n<button ng-repeat-end class=\"btn {{ item.style || 'btn-default' }} {{form.fieldHtmlClass}}\" type=\"button\" ng-disabled=\"form.readonly\" ng-if=\"item.type != 'submit'\" ng-click=\"buttonClick($event, item)\"><span ng-if=\"item.icon\" class=\"item.icon\"></span>{{item.title}}</button>\n</div>",
+      "items": [
+        {
+          "type": "button",
+          "title": "Cancel",
+          "onClick": "states.currentItem = null"
+        },
+        {
+          "type": "submit",
+          "style": "btn-primary",
+          "title": "Save"
+        }
+      ]
+    }
+  ]
+}

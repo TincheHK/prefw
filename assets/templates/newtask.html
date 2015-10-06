@@ -1,0 +1,43 @@
+<form class="task" ng-submit="doCreate()">
+  <div class="background">
+    <img ng-src="{{ states.currentItem.background_image || '/assets/images/work-blank.jpg' }}"/>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3 hidden-sm hidden-xs">
+      <small class="text-muted">
+        <i ng-if="states.currentItem.icon" class="{{states.currentItem.icon}}"></i>
+        {{ states.currentItem.name }}
+      </small>
+
+      <h4>{{description}}</h4>
+
+      <ol class="task-list">
+        <li ng-repeat="$task in states.currentItem.tasks" class="inactive">
+          {{ $task.extra.name || $task.name }}
+        </li>
+      </ol>
+    </div>
+
+    <div class="col-md-9">
+      <div class="form-group">
+        <label class="control-label">Work description</label>
+
+        <div class="row">
+          <div class="col-xs-9 col-sm-10">
+            <input type="text" ng-model="description" class="form-control" placeholder="E.g. Purchase Order 13/01/2015" required/>
+          </div>
+
+          <div class="col-xs-3 col-sm-2 text-center">
+            <input type="submit" class="btn btn-primary btn-block" value="Save" ng-if="!states.formLock"/>
+            <i class="glyphicon glyphicon-refresh glyphicon-spin text-muted" ng-if="states.formLock"></i>
+          </div>
+        </div>
+
+        <div class="help-block">
+          Briefly describe this job.
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

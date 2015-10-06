@@ -1,0 +1,18 @@
+#
+# Redirects all access to gateway.php.
+#
+<IfModule rewrite_module>
+
+  #
+  # Rewrite starts
+  RewriteEngine On
+
+  RewriteBase /
+
+  #
+  # Prevent redirection loops
+  RewriteCond %{REQUEST_URI} !.private/gateway.php$ [NC]
+  # Start redirecting to gateway
+  RewriteRule .* .private/gateway.php [L]
+
+</IfModule>

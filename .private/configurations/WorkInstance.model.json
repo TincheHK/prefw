@@ -1,0 +1,63 @@
+{
+  "data": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "/serivce/_/WorkInstance/schema",
+    "type": "object",
+    "title": "WorkInstance",
+    "description": "Work instance model created from Works.",
+    "properties": {
+      "id": {
+        "type": "integer",
+        "description": "WorkInstance identity key",
+        "minimum": 0,
+        "exclusiveMinimum": true
+      },
+      "description": {
+        "type": "string",
+        "description": "Briefly describe this job.",
+        "minLength": 2
+      },
+      "icon": {
+        "type": "string",
+        "description": "CSS class for icon of this work instance."
+      },
+      "background_image": {
+        "type": "string",
+        "description": "Background image URL.",
+        "format": "url"
+      },
+      "state": {
+        "type": "string",
+        "enum": ["Open", "Close"],
+        "default": "Open"
+      },
+      "tasks": {
+        "type": "array",
+        "items": {
+          "$comment": "This should be change to $ref in the future.",
+          "type": "object"
+        },
+        "minItems": 1,
+        "uniqueItems": true
+      },
+      "nextTask": {
+        "type": "string",
+        "description": "UUID for next task instance.",
+        "pattern": "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+      },
+      "dataStore": {
+        "type": "object",
+        "description": "Persistant data storage for inter-task communication.",
+        "additionalProperties": true
+      }
+    },
+    "required": ["description", "state", "tasks", "nextTask"]
+  },
+  "form": [
+    {
+      "key": "description",
+      "type": "text",
+      "notitle": true
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+<ol class="breadcrumb">
+  <li>Control Panel</li>
+  <li>Workflows</li>
+</ol>
+
+<div class="row">
+  <div class="col-sm-3 col-md-2">
+    <div class="form-group">
+      <ul class="nav nav-pills nav-stacked">
+        <li role="presentation" class="active">
+          <a href="/admin/workflows">Workflows</a>
+        </li>
+        <li role="presentation">
+          <a href="/admin/tasks">Tasks</a>
+        </li>
+        <li role="presentation">
+          <a href="/admin/users">Users</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-sm-9 col-md-10">
+    <div class="form-group">
+      <form class="form-inline text-right">
+        <div class="form-group">
+          <a class="btn btn-info" href="/admin/workflows/new">
+            <span class="glyphicon glyphicon-plus"></span> New
+          </a>
+        </div>
+
+        <div class="form-group">
+          <div class="input-group">
+            <input id="txtSearch" type="text" class="form-control" ng-model="states.searchText" placeholder="⌘ + / to search"/>
+
+            <span class="input-group-addon">
+              <span class="glyphicon glyphicon-search"></span>
+            </span>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="work columns">
+      <div class="instance col-xs-6 col-sm-4 col-md-3" ng-repeat="$item in works | filter: states.searchText">
+        <div class="thumbnail"
+          ng-style="{ 'background-image': 'url(' + ($item.background_image || '/assets/images/work-blank.jpg' ) + ')' }">
+          <div class="caption">
+            <h5>
+              <span ng-if="$item.icon" class="{{$item.icon}}"></span>
+              {{$item.name}}
+            </h5>
+
+            <ol class="task-list">
+              <li class="inactive" ng-repeat="$task in $item.tasks">
+                {{$task.extra.name || $task.name}}
+              </li>
+            </ol>
+
+            <div class="text-right text-muted">
+              <small><em>Last edited {{$item.timestamp | timeAgo}}</em></small>
+            </div>
+
+            <div class="text-center control-group">
+              <a class="btn btn-info btn-sm btn-round" href="/admin/workflows/{{$item.uuid}}">Edit</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="lead text-center text-muted" ng-if="!works.length">
+      No workflows in database.
+    </p>
+  </div>
+</div>
