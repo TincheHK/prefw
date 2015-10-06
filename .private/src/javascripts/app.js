@@ -730,15 +730,17 @@ app.controller('TaskCtrl', function TaskCtrl($q, $timeout, $location, $http, $sc
     $scope.$emit('$item:load', 'WorkInstance', { nextTask: $routeParams.uuid }, { '@output': 'unwraps()' });
 
     $scope.$watch('states.currentItem', function(instance) {
-      (instance.$promise || $q.resolve()).then(function() {
-        if ( instance.nextTask ) {
-          s.baseUrl = '/task/' + instance.nextTask + '/';
-        }
+      if ( instance ) {
+        (instance.$promise || $q.resolve()).then(function() {
+          if ( instance.nextTask ) {
+            s.baseUrl = '/task/' + instance.nextTask + '/';
+          }
 
-        // make a shortcut for $task object
-        $scope.$task = instance.__nextTask;
-        $scope.$store = instance.dataStore || {};
-      });
+          // make a shortcut for $task object
+          $scope.$task = instance.__nextTask;
+          $scope.$store = instance.dataStore || {};
+        });
+      }
     });
 
     $scope.$on('$destroy', function() {
@@ -806,6 +808,18 @@ app.controller('AdminCtrl', function AdminCtrl($q, $timeout, $location, hotkeys,
     if ( schemaForm.$valid ) {
       s.formLock = true;
 
+      // note; hide modal dialogs if any one is active
+      if ( $('.modal.in').length ) {
+        $('.modal.in')
+          .modal('hide')
+          .on('hidden.bs.modal', _doSubmit);
+      }
+      else {
+        _doSubmit();
+      }
+    }
+
+    function _doSubmit() {
       delete s.currentItem.timestamp;
 
       // todo: should determined by HTTP status code after $save() instead, but we have no way to get that from $save().
