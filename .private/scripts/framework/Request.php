@@ -438,11 +438,16 @@ class Request {
    * @return {string} Fingerprint hash from current request, or null when no such info is available.
    */
   public function fingerprint() {
-    $res = array_select($this->client, array('address', 'userAgent'));
-    $res = array_filter($res);
-    $res = implode(':', $res);
-    if ( $res ) {
-      return sha1($res);
+    $fingerprint = $this->meta('fingerprint');
+    if ( $fingerprint ) {
+      return $fingerprint;
+    }
+
+    $fingerprint = array_select($this->client, array('address', 'userAgent'));
+    $fingerprint = array_filter($fingerprint);
+    $fingerprint = implode(':', $fingerprint);
+    if ( $fingerprint ) {
+      return sha1($fingerprint);
     }
   }
 

@@ -258,6 +258,21 @@ app.run(function appRun($injector, $q, $timeout, $http, $cookies, $bayeux, $root
     listThreshold: [10, 50]
   };
 
+  // store fingerprint in cookies
+  // note; user can always disable cookies to stay anonymous, but then they're more
+  //       likely to override their own sessions because of fingerprint being less unique.
+  if ( !$cookies.get('__fingerprint') ) {
+    $.getScript('/assets/js/fp.min.js', function() {
+      if ( typeof Fingerprint2 !== 'undefined' ) {
+        new Fingerprint2().get(function(fingerprint) {
+          $cookies.put('__fingerprint', fingerprint);
+        });
+
+        Fingerprint2 = null;
+      }
+    });
+  }
+
   // current user session
   $rs.user = $injector.get('User').get({ id: '~' },
     function onUser() {
