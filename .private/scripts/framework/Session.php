@@ -57,7 +57,7 @@ class Session {
   const EXPIRE_TIME = '-1 week';
 
   // Sessions this old will be deleted.
-  const DELETE_TIME = '-1 month';
+  const DELETE_TIME = '-2 week';
 
   //----------------------------------------------------------------------------
   //
