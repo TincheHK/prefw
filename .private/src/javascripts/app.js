@@ -761,10 +761,25 @@ app.controller('TaskCtrl', function TaskCtrl($q, $timeout, $location, $http, $sc
         , data = $scope.$store || {};
 
       $http.post(url, data)
-        .then(function() {
-          $scope.$emit('$list:reload', 'WorkInstance');
+        .then(function(response) {
+          if ( !response.data ) {
+            $scope.$emit('$list:reload', 'WorkInstance');
 
-          $location.path('/');
+            $location.path('/');
+          }
+          else {
+            // note; reload current item
+            angular.extend(s.currentItem, response.data);
+            parseNextTask(s.currentItem);
+
+            // note; Check if you have group permission and it is not a headless task
+            if ( s.currentItem.__nextTask.type != 'Headless' ) {
+              $location.path('/task/' + s.currentItem.nextTask).replace();
+            }
+            else {
+              $location.path('/');
+            }
+          }
         });
     };
 
