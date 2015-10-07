@@ -788,15 +788,23 @@ app.controller('TaskCtrl', function TaskCtrl($q, $timeout, $location, $http, $sc
         combo: 'tab',
         allowIn: ['TEXTAREA'],
         callback: function($evt) {
-          var node = $evt.target
-            , sS = node.selectionStart
-            , sE = node.selectionEnd;
+          var node = $($evt.target)
+            , val = node.val()
+            , sS = node.prop('selectionStart')
+            , sE = node.prop('selectionEnd');
+
+          if ( $(node).not('textarea') ) {
+            return;
+          }
 
           $evt.preventDefault();
 
-          node.value = node.value.substr(0, sS) + '  ' + node.value.substr(sE);
+          node.val(val.substr(0, sS) + '  ' + val.substr(sE));
 
-          node.selectionStart = node.selectionEnd = sS + 2;
+          sS+= 2;
+
+          node.prop('selectionStart', sS);
+          node.prop('selectionEnd', sS);
         }
       });
   }
