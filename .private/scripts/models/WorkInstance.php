@@ -296,7 +296,11 @@ class WorkInstance extends abstraction\JsonSchemaModel {
       // note; Work:Instance relation
       $this->parents('Work', $this->work(), true);
 
-      if ( $this->__tasks ) {
+      // note; If no task exists, throw it.
+      if ( empty($this->__tasks) ) {
+        throw new FrameworkException('No tasks exists in work instance.');
+      }
+      else {
         // temprorily release immutable lock
         $this->_immutable = false;
 
@@ -532,8 +536,14 @@ class WorkInstance extends abstraction\JsonSchemaModel {
       return $result;
     }
     else {
-      $this->__response->status(200);
-      return $this;
+      // note; User might no longer has access to the updated work instance.
+      if ( $this->data() ) {
+        $this->__response->status(200);
+        return $this;
+      }
+      else {
+        $this->__response->status(204);
+      }
     }
   }
 
