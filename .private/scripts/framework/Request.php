@@ -316,7 +316,7 @@ class Request {
    *
    * Parameters prefixed with this will be parsed as special.
    */
-  protected $metaPrefix = '@';
+  protected $metaPrefix = '__';
 
   //-------------------------------------
   //  Resolver

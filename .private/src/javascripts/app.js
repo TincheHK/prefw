@@ -466,7 +466,7 @@ app.run(function appRun($injector, $q, $timeout, $http, $cookies, $bayeux, $root
     // load collection with filter
     filter = angular.extend(filter || {},
       // default parameters
-      { '@limits': [$offset, $rs.listThreshold[1]].join('-')
+      { '__range': [$offset, $rs.listThreshold[1]].join('-')
       });
 
     // remove empty string
@@ -610,7 +610,7 @@ app.controller('HomeCtrl', function HomeCtrl($sce, $http, $scope, hotkeys, WorkI
 
   // default sorting
   if ( !s.filter.WorkInstance ) {
-    s.filter.WorkInstance = { '@sorter': { timestamp: 0 } };
+    s.filter.WorkInstance = { '__order': { timestamp: 0 } };
   }
 
   // note: house keeping
@@ -673,7 +673,7 @@ app.controller('TaskCtrl', function TaskCtrl($q, $timeout, $location, $http, $sc
 
       s.formLock = true;
 
-      var $req = $http.post('/service/_/Work/get/' + work.uuid + '?@output=invokes(createInstance)',
+      var $req = $http.post('/service/_/Work/get/' + work.uuid + '?__output=invokes(createInstance)',
         { description: $scope.description });
 
       $req.then(function(response) {
@@ -721,7 +721,7 @@ app.controller('TaskCtrl', function TaskCtrl($q, $timeout, $location, $http, $sc
     s.title = 'Task';
 
     // note: create template context from work instance
-    $scope.$emit('$item:load', 'WorkInstance', { nextTask: $routeParams.uuid }, { '@output': 'unwraps()' });
+    $scope.$emit('$item:load', 'WorkInstance', { nextTask: $routeParams.uuid }, { '__output': 'unwraps()' });
 
     $scope.$watch('states.currentItem', function(instance) {
       if ( instance ) {
@@ -742,7 +742,7 @@ app.controller('TaskCtrl', function TaskCtrl($q, $timeout, $location, $http, $sc
     });
 
     $scope.doProcess = function() {
-      var url = '/service/_/WorkInstance/get/' + s.currentItem.uuid + '?@output=invokes(process)'
+      var url = '/service/_/WorkInstance/get/' + s.currentItem.uuid + '?__output=invokes(process)'
         , data = $scope.$store || {};
 
       $http.post(url, data)

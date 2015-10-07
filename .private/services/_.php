@@ -268,10 +268,10 @@ class _ extends \framework\WebService {
   }
 
   /**
-   * Parse "@limit" parameter or "List-Range" header for collection retrieval.
+   * Parse "__range" parameter or "List-Range" header for collection retrieval.
    */
   private function listRange() {
-    $listRange = $this->request()->meta('limits');
+    $listRange = $this->request()->meta('range');
     if ( !$listRange ) {
       $listRange = $this->request()->header('List-Range');
     }
@@ -293,10 +293,10 @@ class _ extends \framework\WebService {
   }
 
   /**
-   * Parse "@sorter" parameter for a collection ordering.
+   * Parse "__order" parameter for a collection ordering.
    */
   private function listOrder() {
-    $listOrder = $this->request()->meta('sorter');
+    $listOrder = $this->request()->meta('order');
     return (array) $listOrder;
   }
 }
