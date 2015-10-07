@@ -55,7 +55,7 @@
 
             <ol class="task-list">
               <li class="inactive" ng-repeat="$task in $work.tasks | limitTo:4">{{$task.extra.name || $task.name}}</li>
-              <li class="extended" ng-if="$work.tasks.length > 3">...</li>
+              <li class="extended" ng-if="$work.tasks.length > 4">...</li>
             </ol>
 
             <div class="text-center control-group">
@@ -66,46 +66,48 @@
       </div>
 
       <div class="instance col-sm-6 col-md-4 col-lg-3"
-        ng-repeat="$instance in workinstances | filter:{description: states.txtJobSearch} | infiniteLoad:states.listThreshold[0]:lengthenInstances ">
-        <div class="thumbnail" ng-style="{ 'background-image': 'url(' + ($instance.background_image || '/assets/images/work-blank.jpg' ) + ')' }">
+        ng-repeat="$item in workinstances | filter:{description: states.txtJobSearch} | infiniteLoad:states.listThreshold[0]:lengthenInstances ">
+        <div class="thumbnail" ng-style="{ 'background-image': 'url(' + ($item.background_image || '/assets/images/work-blank.jpg' ) + ')' }">
           <div class="caption">
-            <small class="text-muted"><span ng-if="$instance.icon" class="{{$instance.icon}}"></span> {{$instance.name}}</small>
+            <small class="text-muted"><span ng-if="$item.icon" class="{{$item.icon}}"></span> {{$item.name}}</small>
 
-            <h5>{{$instance.description}}</h5>
+            <h5>{{$item.description}}</h5>
 
-            <ol class="task-list" ng-if="!$instance.lastError">
-              <li class="extended" ng-if="$instance.__nextIndex > 1">...</li>
+            <ol start="{{$item.__nextIndex > 1 ? $item.__nextIndex - 1 : ''}}"
+                class="task-list"
+                ng-if="!$item.lastError">
+              <li class="extended" ng-if="$item.__nextIndex > 1">...</li>
 
-              <li ng-repeat="($index, $task) in $instance.tasks | limitTo:3:Math.max($instance.__nextIndex - 1, 0)"
-                ng-class="{ active: $instance.__nextIndex == $index
-                          , finished: $instance.__nextIndex > $index
-                          , inactive: $instance.__nextIndex < $index
-                          }">
+              <li ng-repeat="($index, $task) in $item.tasks | limitTo:$item.__tasksLength:$item.__tasksBegin"
+                  ng-class="{ active: $item.__nextIndex == $index + $item.__tasksBegin
+                            , finished: $item.__nextIndex > $index + $item.__tasksBegin
+                            , inactive: $item.__nextIndex < $index + $item.__tasksBegin
+                            }">
                 <span>{{$task.extra.name || $task.name}}</span>
               </li>
 
-              <li class="extended" ng-if="$instance.tasks.length > $instance.__nextIndex + 1">...</li>
+              <li class="extended" ng-if="$item.tasks.length > $item.__tasksBegin + $item.__tasksLength">...</li>
             </ol>
 
-            <ol class="task-list" ng-if="$instance.lastError" start="{{$instance.__nextIndex + 1}}">
+            <ol class="task-list" ng-if="$item.lastError" start="{{$item.__nextIndex + 1}}">
               <li class="active">
-                <span>{{$instance.__nextTask.extra.name || $instance.__nextTask.name}}</span>
+                <span>{{$item.__nextTask.extra.name || $item.__nextTask.name}}</span>
                 <p class="text-danger">
                   <i class="glyphicon glyphicon-exclamation-sign"></i>
-                  {{$instance.lastError.message}}
+                  {{$item.lastError.message}}
                 </p>
               </li>
             </ol>
 
-            <div class="text-center control-group" ng-if="$instance.__nextTask.type != 'Headless'">
-              <a href="/task/{{$instance.nextTask}}" class="btn btn-info btn-sm btn-round">View</a>
+            <div class="text-center control-group" ng-if="$item.__nextTask.type != 'Headless'">
+              <a href="/task/{{$item.nextTask}}" class="btn btn-info btn-sm btn-round">View</a>
             </div>
           </div>
         </div>
 
         <div class="text-right text-muted">
-          <small title="{{$instance.timestamp | date:'dd MMM, yyyy \'at\' H:mm'}}">
-            <em>Updated {{$instance.timestamp | timeAgo}}</em>
+          <small title="{{$item.timestamp | date:'dd MMM, yyyy \'at\' H:mm'}}">
+            <em>Updated {{$item.timestamp | timeAgo}}</em>
           </small>
         </div>
       </div>

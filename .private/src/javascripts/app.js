@@ -71,6 +71,8 @@ app.factory('parseNextTask', function() {
         if ( tasks[i].uuid == instance.nextTask ) {
           instance.__nextIndex = i;
           instance.__nextTask = tasks[i];
+          instance.__tasksBegin = Math.max(i-1, 0);
+          instance.__tasksLength = 3;
           break;
         }
       }
@@ -649,7 +651,7 @@ app.controller('HomeCtrl', function HomeCtrl($sce, $http, $scope, hotkeys, WorkI
 /*! Task Controller
  *  Template to work with.
  */
-app.controller('TaskCtrl', function TaskCtrl($q, $timeout, $location, $http, $scope, $rootScope, $routeParams, notify, hotkeys) {
+app.controller('TaskCtrl', function TaskCtrl($q, $timeout, $location, $http, $scope, $rootScope, $routeParams, notify, hotkeys, parseNextTask) {
   var s = $scope.states || {}
     , $task;
 
@@ -699,15 +701,7 @@ app.controller('TaskCtrl', function TaskCtrl($q, $timeout, $location, $http, $sc
           $scope.$emit('$list:reload', 'WorkInstance');
         }
 
-        if ( workInstance.nextTask ) {
-          for ( var i=0; i<workInstance.tasks.length; i++ ) {
-            if ( workInstance.tasks[i].uuid = workInstance.nextTask ) {
-              workInstance.__nextIndex = i;
-              workInstance.__nextTask = workInstance.tasks[i];
-              break;
-            }
-          }
-        }
+        workInstance = parseNextTask(workInstance);
 
         // Immediately go to the first task
         if ( response.data.nextTask ) {
@@ -741,7 +735,7 @@ app.controller('TaskCtrl', function TaskCtrl($q, $timeout, $location, $http, $sc
           $scope.$store = instance.dataStore || {};
         });
       }
-    });
+    }, true);
 
     $scope.$on('$destroy', function() {
       s.baseUrl = '/';
